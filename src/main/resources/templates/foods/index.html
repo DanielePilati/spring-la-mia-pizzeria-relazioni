@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link th:replace="~{fragments/fragments :: head}">
+	</link>
+</head>
+
+<body>
+	<!--header-->
+	<header th:replace="~{fragments/fragments :: header('foods')}">
+	</header>
+	<!--main-->
+	<main>
+		<div class="container d-flex justify-content-center ">
+			<div class="row justify-content-center">
+				
+				<h1 class="text-center"> Menù</h1>
+				
+				<!--ALERT-->
+				<th:block th:if="${message != null}">
+					<div th:insert="fragments/fragments :: alert(${message},${class})">
+					</div>
+				</th:block>
+
+				<!--CONDITION TRUE-->
+				<th:block th:if="${foods.size > 0}">
+					<!--SEARCH-->
+					<div class="row my-3 ms-2 justify-content-end">
+						<a class="col-auto btn btn-dark" th:href="@{/foods/create}" data-toggle="tooltip"
+							title="Add Food">&#43; &#127829;</a>
+						<form class="col-auto d-flex ms-auto" th:action="@{/foods/search/}" method="get">
+							<input class="form-control me-2" placeholder="Search" aria-label="Search" value="Search"
+								th:field="${search.name}">
+							<button class="btn btn-dark" type="submit">Submit</button>
+						</form>
+					</div>
+					<!--TABLE-->
+					<table class="table table-light table-hover">
+						<!--T-HEAD-->
+						<thead>
+							<tr class="table-secondary">
+								<th scope="col">#</th>
+								<th scope="col">Name</th>
+								<th scope="col">Description</th>
+								<th scope="col" class="text-end">Price</th>
+								<th scope="col" class="text-end">Actions</th>
+							</tr>
+						</thead>
+						<!--T-BODY-->
+						<tbody>
+							<tr th:each="food : ${foods}">
+								<td th:text="${food.id}"></td>
+								<td th:text="${food.name}"></td>
+								<td th:text="${food.description}"></td>
+								<td th:text="|${food.getPriceFormatted()}|" class="text-end">
+								<!--BUTTONS-->
+								<td class="text-end">
+									<!--SHOW-->
+									<a th:href="@{/foods/show/{id}(id=${food.id})}" class="btn btn-sm "
+										data-toggle="tooltip" title="View">&#128270;</a>
+									<!--EDIT-->
+									<a th:href="@{/foods/edit/{id}(id=${food.id})}" class="btn btn-sm ml-2"
+										data-toggle="tooltip" title="Edit">&#9998;</a>
+									<!--DELETE-->
+									<form method="GET" th:action="@{/foods/delete/{id}(id=${food.id})}"
+										class="d-inline">
+										<!-- Button trigger modal -->
+										<button type="button" class="btn btn-white btn-sm ml-2" data-bs-toggle="modal"
+											th:data-bs-target="|#deleteModal-${food.id}|" data-toggle="tooltip"
+											title="Delete">
+											&#x1F5D1;
+										</button>
+										<!-- Modal -->
+										<div class="modal fade" th:id="|deleteModal-${food.id}|" tabindex="-1"
+											aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h1 class="modal-title fs-5" id="exampleModalLabel">&#x26A0; This action
+															cannot be reversed! &#x26A0;
+														</h1>
+														<button type="button" class="btn-close"
+															data-bs-dismiss="modal-*{id}" aria-label="Close"></button>
+													</div>
+													<div class="modal-body text-start">
+														Are you shure you want remove "<b>[[${food.name}]]</b>"
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-success"
+															data-bs-dismiss="modal">Close</button>
+														<button type="submit" class="btn btn-danger">Continue</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</th:block>
+
+				<!--CONDITION FALSE-->
+				<th:block th:unless="${foods.size > 0}">
+					<h2 class="text-center mt-3">no foods found</h2>
+					<a class="col-auto btn btn-dark  mb-3" th:href="@{/foods/create}">Add food</a>
+					<!--SEARCH-->
+					<form class="d-flex ms-auto" th:action="@{/foods/search/}" method="get">
+						<input class="form-control me-2" placeholder="Search" aria-label="Search" value="Search"
+							th:field="${search.name}">
+						<button class="btn btn-dark" type="submit">Search</button>
+					</form>
+				</th:block>
+				
+			</div>
+		</div>
+	</main>
+	<!--footer-->
+	<footer>
+
+	</footer>
+</body>
+<!--scripts-->
+<th:block th:replace="~{fragments/fragments :: scripts}">
+	</th>
+
+</html>
