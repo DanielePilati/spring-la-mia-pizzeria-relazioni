@@ -2,14 +2,17 @@ package org.web.app.java.spring.model;
 
 import java.text.NumberFormat;
 import java.time.Instant;
+import java.util.List;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,6 +24,7 @@ public class Food {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "food_id", nullable = false)
 	private Integer id;
 
 	@NotEmpty
@@ -41,6 +45,9 @@ public class Food {
 
 	@UpdateTimestamp
 	private Instant updatedAt;
+	
+	@OneToMany( mappedBy = "food", cascade = CascadeType.REMOVE)
+	private List<Offer> offers;
 
 	public Instant getUpdatedAt() {
 		return updatedAt;
@@ -94,6 +101,14 @@ public class Food {
 	public String getPriceFormatted() {
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		return formatter.format(price);
+	}
+
+	public List<Offer> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(List<Offer> offers) {
+		this.offers = offers;
 	}
 	
 }

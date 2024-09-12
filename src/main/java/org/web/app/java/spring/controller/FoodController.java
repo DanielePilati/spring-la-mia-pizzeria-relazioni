@@ -1,7 +1,6 @@
 package org.web.app.java.spring.controller;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.web.app.java.spring.model.Food;
-import org.web.app.java.spring.repo.FoodRepository;
+import org.web.app.java.spring.service.FoodService;
 
 import jakarta.validation.Valid;
 
@@ -21,14 +20,13 @@ import jakarta.validation.Valid;
 @RequestMapping("/foods")
 public class FoodController {
 
-	@Autowired
-	private FoodRepository repo;
+	private FoodService service;
 
 	// READ
 	@GetMapping()
 	public String index(Model model) {
 
-		List<Food> foods = repo.findAll();
+		List<Food> foods = service.findAllFoods();
 		model.addAttribute("foods", foods);
 		model.addAttribute("search", new Food());
 
@@ -38,7 +36,7 @@ public class FoodController {
 	@GetMapping("/show/{id}")
 	public String show(Model model, @PathVariable("id") Integer foodId) {
 
-		model.addAttribute("foods", repo.findById(foodId).get());
+		model.addAttribute("foods", service.findById(foodId));
 
 		return "/foods/show";
 	}
@@ -47,7 +45,7 @@ public class FoodController {
 	public String search(Model model, @RequestParam("name") String name) {
 
 		model.addAttribute("search", new Food());
-		model.addAttribute("foods", repo.findByNameContains(name));
+		model.addAttribute("foods", service.findByName(name));
 
 		return "/foods/index";
 	}
@@ -69,7 +67,7 @@ public class FoodController {
 			return "/foods/create";
 		}
 
-		repo.save(formFood);
+		service.create(formFood);
 		
 		attributes.addFlashAttribute("message", "Created");
 		attributes.addFlashAttribute("class", "success");
@@ -81,7 +79,7 @@ public class FoodController {
 	@GetMapping("/edit/{id}")
 	public String edit(Model model, @PathVariable("id") Integer foodId) {
 
-		model.addAttribute("food", repo.findById(foodId).get());
+		model.addAttribute("food", service.findById(foodId));
 
 		return "/foods/edit";
 	}
@@ -94,9 +92,9 @@ public class FoodController {
 			return "/foods/edit";
 		}
 
-		repo.save(formFood);
+		service.update(formFood);
 
-		attributes.addFlashAttribute("food", repo.findById(formFood.getId()).get());
+		attributes.addFlashAttribute("food", service.findById(formFood.getId()));
 		attributes.addFlashAttribute("message", "Updated");
 		attributes.addFlashAttribute("class", "warning");
 
@@ -107,7 +105,7 @@ public class FoodController {
 	@GetMapping("/delete/{id}")
 	public String delete(Model model, @PathVariable("id") Integer foodId, RedirectAttributes attributes) {
 
-		repo.deleteById(foodId);
+		service.deleteById(foodId);
 
 		attributes.addFlashAttribute("message", "Eliminated");
 		attributes.addFlashAttribute("class", "danger");
