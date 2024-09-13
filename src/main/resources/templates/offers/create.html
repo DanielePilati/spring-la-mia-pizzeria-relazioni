@@ -8,38 +8,39 @@
 
 <body>
 	<!--header-->
-	<header th:replace="~{fragments/fragments :: header('foods')}">
+	<header th:replace="~{fragments/fragments :: header('offers')}">
 	</header>
 	<!--main-->
 	<main>
-		<h1 class="text-center">Welcome To Food Creation</h1>
+		<h1 class="text-center">Welcome To Offer Creation</h1>
 		<div class="container justify-content-center px-5">
 			<!--FORM-->
-			<form id="foods-form" method="POST" th:action="@{/foods/create}" th:object="${food}">
+			<form id="foods-form" method="POST" th:action="@{/offers/create}" th:object="${offer}">
+				<input type="hidden" th:field="*{food}"></input>
 				<!--NAME FIELD-->
 				<div class="form-group">
-					<label for="name">Name:</label>
-					<input type="text" class="form-control" id="name" placeholder="Es: Margherita" th:field="*{name}">
+					<label for="title">Title:</label>
+					<input type="text" class="form-control" id="title" placeholder="Es: Supersconti!" th:field="*{title}">
 					<ul th:if="${#fields.hasErrors()}" class="text-danger mt-2 ps-4">
-						<li th:each="err : ${#fields.errors('name')}" th:text="${err}" class="error " />
+						<li th:each="err : ${#fields.errors('title')}" th:text="${err}" class="error " />
 					</ul>
 				</div>
 				<!--DESCRIPTION FIELD-->
 				<div class="form-group">
-					<label for="description">Description:</label>
-					<input type="text" class="form-control" id="description" placeholder="Es: pomodoro, mozzarella"
-						th:field="*{description}">
+					<label for="startDate">Start Date:</label>
+					<input type="date" class="form-control" id="startDate" placeholder="Es: 2024-08-12"
+						th:field="*{startDate}">
 					<ul th:if="${#fields.hasErrors()}" class="text-danger mt-2 ps-4">
-						<li th:each="err : ${#fields.errors('description')}" th:text="${err}" class="error" />
+						<li th:each="err : ${#fields.errors('startDate')}" th:text="${err}" class="error" />
 					</ul>
 				</div>
 				<!--PRICE FIELD-->
 				<div class="form-group">
-					<label for="price">Price:</label>
-					<input type="number" step="0.01" class="form-control" id="price" placeholder="Enter price"
-						th:field="*{price}">
+					<label for="endDate">End Date:</label>
+					<input type="date" step="0.01" class="form-control" id="endDate" placeholder="Es: 2024-09-12"
+						th:field="*{endDate}">
 					<ul th:if="${#fields.hasErrors()}" class="text-danger mt-2 ps-4">
-						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" class="error" />
+						<li th:each="err : ${#fields.errors('endDate')}" th:text="${err}" class="error" />
 					</ul>
 				</div>
 				<!--BUTTONS-->

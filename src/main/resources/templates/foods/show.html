@@ -8,14 +8,19 @@
 
 <body>
 	<!--header-->
-	<header th:replace="~{fragments/fragments :: header('foods/show')}">
+	<header th:replace="~{fragments/fragments :: header('foods')}">
 	</header>
 	<!--main-->
 	<main>
 		<div class="container d-flex justify-content-center pt-5">
-			<div class="row">
+			<div class="row justify-content-center">
+				<!--ALERT-->
+				<th:block th:if="${message != null}">
+					<div th:insert="fragments/fragments :: alert(${message},${class},'offers')">
+					</div>
+				</th:block>
 				<!--CARD-->
-				<div class="card" style="width: 20rem;" th:object="${foods}">
+				<div class="card" style="width: 40rem;" th:object="${foods}">
 					<!--IMG-->
 					<img class="card-img-top p-2" th:src="*{imgUrl}" alt="Pizza Image">
 					<!--BODY-->
@@ -26,6 +31,54 @@
 					</div>
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item text-end">[[*{getPriceFormatted()}]]</li>
+						<li class="list-group-item text-danger" th:each="offer : *{offers}">
+							<div class="row">
+								<h6 class="col">[[${offer.title}]]</h6>
+								<div class="col text-end">
+									<!--SHOW-->
+									<a th:href="@{/offers/show/{id}(id=${offer.id})}" class="btn btn-sm "
+										data-toggle="tooltip" title="View">&#128270;</a>
+									<!--EDIT-->
+									<a th:href="@{/offers/edit/{id}(id=${offer.id})}" class="btn btn-sm ml-2"
+										data-toggle="tooltip" title="Edit">&#9998;</a>
+									<!--DELETE-->
+									<form method="GET" th:action="@{/offers/delete/{id}(id=${offer.id})}"
+										class="d-inline">
+										<!-- Button trigger modal -->
+										<button type="button" class="btn btn-white btn-sm ml-2" data-bs-toggle="modal"
+											th:data-bs-target="|#deleteModal-${offer.id}|" data-toggle="tooltip"
+											title="Delete">
+											&#x1F5D1;
+										</button>
+										<!-- Modal -->
+										<div class="modal fade" th:id="|deleteModal-${offer.id}|" tabindex="-1"
+											aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h1 class="modal-title fs-5" id="exampleModalLabel">&#x26A0;
+															This action
+															cannot be reversed! &#x26A0;
+														</h1>
+														<button type="button" class="btn-close"
+															data-bs-dismiss="modal-${offer.id}"
+															aria-label="Close"></button>
+													</div>
+													<div class="modal-body text-start">
+														Are you shure you want remove "<b>[[${offer.title}]]</b>"
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-success"
+															data-bs-dismiss="modal">Close</button>
+														<button type="submit" class="btn btn-danger">Continue</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</li>
 					</ul>
 					<!--BUTTONS-->
 					<div class="card-body">
@@ -34,6 +87,8 @@
 						<!--EDIT-->
 						<a th:href="@{/foods/edit/{id}(id=*{id})}" class="btn btn-dark ml-2" data-toggle="tooltip"
 							title="Edit">Edit</a>
+						<a th:href="@{/foods/show/{id}/offer(id=*{id})}" class="btn btn-dark ml-2" data-toggle="tooltip"
+							title="Edit">Add Offer</a>
 						<!--DELETE-->
 						<form th:replace="~{fragments/fragments :: modal-food(${foods}, 'delete')}">
 					</div>

@@ -8,14 +8,14 @@
 
 <body>
 	<!--header-->
-	<header th:replace="~{fragments/fragments :: header('foods')}">
+	<header th:replace="~{fragments/fragments :: header('offers')}">
 	</header>
 	<!--main-->
 	<main>
 		<div class="container d-flex justify-content-center ">
 			<div class="row justify-content-center">
 
-				<h1 class="text-center"> Menù</h1>
+				<h1 class="text-center">Offers</h1>
 
 				<!--ALERT-->
 				<th:block th:if="${message != null}">
@@ -24,16 +24,16 @@
 				</th:block>
 
 				<!--CONDITION TRUE-->
-				<th:block th:if="${foods.size > 0}">
+				<th:block th:if="${offers.size > 0}">
 					<!--SEARCH-->
 					<div class="row my-3 ms-2 justify-content-end">
-						<a class="col-auto btn btn-dark" th:href="@{/foods/create}" data-toggle="tooltip"
-							title="Add Food">&#43; &#127829;</a>
-						<form class="col-auto d-flex ms-auto" th:action="@{/foods/search/}" method="get">
-							<a class="col-auto btn btn-dark me-2" th:href="@{/foods}" data-toggle="tooltip"
+						<a class="col-auto btn btn-dark" th:href="@{/offers/create}" data-toggle="tooltip"
+							title="Add Offer">&#43; Add</a>
+						<form class="col-auto d-flex ms-auto" th:action="@{/offers/search/}" method="GET">
+							<a class="col-auto btn btn-dark me-2" th:href="@{/offers}" data-toggle="tooltip"
 								title="Reset Research">&#10227; Reset</a>
 							<input class="form-control me-2" placeholder="Search" aria-label="Search" value="Search"
-								th:field="${search.name}">
+								th:field="${search.title}">
 							<button class="btn btn-dark" type="submit">Submit</button>
 						</form>
 					</div>
@@ -43,38 +43,38 @@
 						<thead>
 							<tr class="table-secondary">
 								<th scope="col">#</th>
-								<th scope="col">Name</th>
-								<th scope="col">Description</th>
-								<th scope="col" class="text-end">Price</th>
+								<th scope="col">Title</th>
+								<th scope="col">Start Date</th>
+								<th scope="col">End Date</th>
 								<th scope="col" class="text-end">Actions</th>
 							</tr>
 						</thead>
 						<!--T-BODY-->
 						<tbody>
-							<tr th:each="food : ${foods}">
-								<td th:text="${food.id}"></td>
-								<td th:text="${food.name}"></td>
-								<td th:text="${food.description}"></td>
-								<td th:text="|${food.getPriceFormatted()}|" class="text-end">
+							<tr th:each="offer : ${offers}">
+								<td th:text="${offer.id}"></td>
+								<td th:text="${offer.title}"></td>
+								<td th:text="${offer.startDate}"></td>
+								<td th:text="${offer.endDate}">
 									<!--BUTTONS-->
 								<td class="text-end">
 									<!--SHOW-->
-									<a th:href="@{/foods/show/{id}(id=${food.id})}" class="btn btn-sm "
+									<a th:href="@{/offers/show/{id}(id=${offer.id})}" class="btn btn-sm "
 										data-toggle="tooltip" title="View">&#128270;</a>
 									<!--EDIT-->
-									<a th:href="@{/foods/edit/{id}(id=${food.id})}" class="btn btn-sm ml-2"
+									<a th:href="@{/offers/edit/{id}(id=${offer.id})}" class="btn btn-sm ml-2"
 										data-toggle="tooltip" title="Edit">&#9998;</a>
 									<!--DELETE-->
-									<form method="GET" th:action="@{/foods/delete/{id}(id=${food.id})}"
+									<form method="GET" th:action="@{/offers/delete/{id}(id=${offer.id})}"
 										class="d-inline">
 										<!-- Button trigger modal -->
 										<button type="button" class="btn btn-white btn-sm ml-2" data-bs-toggle="modal"
-											th:data-bs-target="|#deleteModal-${food.id}|" data-toggle="tooltip"
+											th:data-bs-target="|#deleteModal-${offer.id}|" data-toggle="tooltip"
 											title="Delete">
 											&#x1F5D1;
 										</button>
 										<!-- Modal -->
-										<div class="modal fade" th:id="|deleteModal-${food.id}|" tabindex="-1"
+										<div class="modal fade" th:id="|deleteModal-${offer.id}|" tabindex="-1"
 											aria-labelledby="exampleModalLabel" aria-hidden="true">
 											<div class="modal-dialog modal-dialog-centered">
 												<div class="modal-content">
@@ -87,7 +87,7 @@
 															data-bs-dismiss="modal-*{id}" aria-label="Close"></button>
 													</div>
 													<div class="modal-body text-start">
-														Are you shure you want remove "<b>[[${food.name}]]</b>"
+														Are you shure you want remove "<b>[[${offer.title}]]</b>"
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-success"
@@ -103,23 +103,21 @@
 						</tbody>
 					</table>
 				</th:block>
-
 				<!--CONDITION FALSE-->
-				<th:block th:unless="${foods.size > 0}">
-					<h2 class="text-center mt-3">No foods found</h2>
+				<th:block th:unless="${offers.size > 0}">
+					<h2 class="text-center mt-3">No offers found</h2>
 					<div class="row justify-content-center my-3">
-						<a class="col-auto btn btn-dark me-2" th:href="@{/foods}" data-toggle="tooltip"
+						<a class="col-auto btn btn-dark me-2" th:href="@{/offers}" data-toggle="tooltip"
 							title="Reset Research">&#10227; Reset</a>
-						<a class="col-auto btn btn-dark" th:href="@{/foods/create}">Add food</a>
+						<a class="col-auto btn btn-dark" th:href="@{/offers/create}">Add Offer</a>
 					</div>
 					<!--SEARCH-->
-					<form class="d-flex ms-auto" th:action="@{/foods/search/}" method="get">
+					<form class="d-flex ms-auto" th:action="@{/offers/search/}" method="GET">
 						<input class="form-control me-2" placeholder="Search" aria-label="Search" value="Search"
-							th:field="${search.name}">
+							th:field="${search.title}">
 						<button class="btn btn-dark" type="submit">Search</button>
 					</form>
 				</th:block>
-
 			</div>
 		</div>
 	</main>

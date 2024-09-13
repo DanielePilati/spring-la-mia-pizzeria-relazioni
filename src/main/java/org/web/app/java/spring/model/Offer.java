@@ -1,7 +1,8 @@
 package org.web.app.java.spring.model;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,19 +10,27 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "offer")
+@Table(name = "offers")
 public class Offer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "offer_id")
 	private Integer id;
 	
-	private Instant startDate;
+	@Column(name = "start_date")
+	private LocalDate startDate;
 	
-	private Instant endDate;
+	@Column(name = "end_date")
+	private LocalDate endDate;
 	
+	@NotEmpty
+	@NotNull
+	@Column(name = "title")
 	private String title;
 	
 	@ManyToOne
@@ -36,7 +45,7 @@ public class Offer {
 		this.id = id;
 	}
 
-	public Instant getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
@@ -48,15 +57,15 @@ public class Offer {
 		this.food = food;
 	}
 
-	public void setStartDate(Instant startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Instant getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Instant endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

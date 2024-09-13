@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link th:replace="~{fragments/fragments :: head}">
+	</link>
+</head>
+
+<body>
+	<!--header-->
+	<header th:replace="~{fragments/fragments :: header('offers')}">
+	</header>
+	<!--main-->
+	<main>
+		<div class="container d-flex justify-content-center pt-5">
+			<div class="row justify-content-center">
+				<!--ALERT-->
+				<th:block th:if="${message != null}">
+					<div th:insert="fragments/fragments :: alert(${message},${class},'offers')">
+					</div>
+				</th:block>
+				<!--CARD-->
+				<div class="card" style="width: 40rem;" th:object="${offers}">
+					<!--BODY-->
+					<div class="card-body">
+						<h5 class="card-title">[[*{title}]]</h5>
+						<p class="card-text">Product: [[*{food.name}]]</p>
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Start at : [[*{startDate}]]</li>
+						<li class="list-group-item">End at : [[*{endDate}]]</li>
+					</ul>
+					<!--BUTTONS-->
+					<div class="card-body">
+						<!--BACK-->
+						<a th:href="@{/offers}" class="card-link btn btn-dark">Back to Offers</a>
+						<!--EDIT-->
+						<a th:href="@{/offers/edit/{id}(id=*{id})}" class="btn btn-dark ml-2" data-toggle="tooltip"
+							title="Edit">Edit</a>
+						<!--DELETE-->
+						<form th:replace="~{fragments/fragments :: modal-food(${offers}, 'delete')}">
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!--footer-->
+	<footer>
+
+	</footer>
+</body>
+<!--scripts-->
+<th:block th:replace="~{fragments/fragments :: scripts}">
+	</th>
+
+</html>

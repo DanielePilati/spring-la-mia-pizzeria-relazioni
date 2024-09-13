@@ -31,14 +31,19 @@
 						<a class="nav-link" th:href="@{/foods} "
 							th:classappend="${route == 'foods' ? 'active' : 'non-active'}">Menù</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/offers} "
+							th:classappend="${route == 'offers' ? 'active' : 'non-active'}">Offers</a>
+					</li>
 				</ul>
 			</div>
 		</nav>
 	</header>
 
 	<!-- fragments :: alert -->
-	<div th:fragment="alert(message, class)" th:class="|alert alert-${class} alert-dismissible fade show|" role="alert">
-		<strong>[[${message}]]!!</strong> Your food is [[${message}]] successfully.
+	<div th:fragment="alert(message, class, linked)" th:class="|alert alert-${class} alert-dismissible fade show|" role="alert">
+		<strong>[[${message}]]!!</strong> [[${message}]] successfully. 
+		<a th:if="${linked == 'offers'}" th:href="@{/offers}"> View all Offers</a>
 	</div>
 
 	<!-- fragments :: modal-food-->

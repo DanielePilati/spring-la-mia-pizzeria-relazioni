@@ -14,9 +14,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "foods")
@@ -24,7 +24,7 @@ public class Food {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "food_id", nullable = false)
+	@Column(name = "food_id")
 	private Integer id;
 
 	@NotEmpty
@@ -39,7 +39,7 @@ public class Food {
 	private String imgUrl;
 
 	@NotNull
-	@Min(0)
+	@PositiveOrZero
 	@Column(name = "food_price", nullable = false)
 	private Double price;
 

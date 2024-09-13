@@ -1,6 +1,6 @@
 package org.web.app.java.spring.controller;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.web.app.java.spring.model.Food;
+import org.web.app.java.spring.model.Offer;
 import org.web.app.java.spring.service.FoodService;
 
 import jakarta.validation.Valid;
@@ -20,14 +21,14 @@ import jakarta.validation.Valid;
 @RequestMapping("/foods")
 public class FoodController {
 
-	private FoodService service;
+	@Autowired
+	private FoodService foodService;
 
 	// READ
 	@GetMapping()
 	public String index(Model model) {
 
-		List<Food> foods = service.findAllFoods();
-		model.addAttribute("foods", foods);
+		model.addAttribute("foods", foodService.findAllFoods());
 		model.addAttribute("search", new Food());
 
 		return "/foods/index";
@@ -36,16 +37,25 @@ public class FoodController {
 	@GetMapping("/show/{id}")
 	public String show(Model model, @PathVariable("id") Integer foodId) {
 
-		model.addAttribute("foods", service.findById(foodId));
+		model.addAttribute("foods", foodService.findById(foodId));
 
 		return "/foods/show";
+	}
+	
+	@GetMapping("/show/{id}/offer")
+	public String offer(Model model, @PathVariable("id") Integer foodId) {
+		Offer offer = new Offer();
+		offer.setFood(foodService.findById(foodId));
+		model.addAttribute("offer", offer);
+
+		return "/offers/create";
 	}
 
 	@GetMapping("/search/")
 	public String search(Model model, @RequestParam("name") String name) {
 
 		model.addAttribute("search", new Food());
-		model.addAttribute("foods", service.findByName(name));
+		model.addAttribute("foods", foodService.findByName(name));
 
 		return "/foods/index";
 	}
@@ -67,7 +77,7 @@ public class FoodController {
 			return "/foods/create";
 		}
 
-		service.create(formFood);
+		foodService.create(formFood);
 		
 		attributes.addFlashAttribute("message", "Created");
 		attributes.addFlashAttribute("class", "success");
@@ -79,7 +89,7 @@ public class FoodController {
 	@GetMapping("/edit/{id}")
 	public String edit(Model model, @PathVariable("id") Integer foodId) {
 
-		model.addAttribute("food", service.findById(foodId));
+		model.addAttribute("food", foodService.findById(foodId));
 
 		return "/foods/edit";
 	}
@@ -92,9 +102,9 @@ public class FoodController {
 			return "/foods/edit";
 		}
 
-		service.update(formFood);
+		foodService.update(formFood);
 
-		attributes.addFlashAttribute("food", service.findById(formFood.getId()));
+		attributes.addFlashAttribute("food", foodService.findById(formFood.getId()));
 		attributes.addFlashAttribute("message", "Updated");
 		attributes.addFlashAttribute("class", "warning");
 
@@ -105,9 +115,9 @@ public class FoodController {
 	@GetMapping("/delete/{id}")
 	public String delete(Model model, @PathVariable("id") Integer foodId, RedirectAttributes attributes) {
 
-		service.deleteById(foodId);
+		foodService.deleteById(foodId);
 
-		attributes.addFlashAttribute("message", "Eliminated");
+		attributes.addFlashAttribute("message", "Deleted");
 		attributes.addFlashAttribute("class", "danger");
 
 		return "redirect:/foods";
