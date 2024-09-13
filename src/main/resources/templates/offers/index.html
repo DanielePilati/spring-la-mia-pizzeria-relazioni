@@ -27,8 +27,6 @@
 				<th:block th:if="${offers.size > 0}">
 					<!--SEARCH-->
 					<div class="row my-3 ms-2 justify-content-end">
-						<a class="col-auto btn btn-dark" th:href="@{/offers/create}" data-toggle="tooltip"
-							title="Add Offer">&#43; Add</a>
 						<form class="col-auto d-flex ms-auto" th:action="@{/offers/search/}" method="GET">
 							<a class="col-auto btn btn-dark me-2" th:href="@{/offers}" data-toggle="tooltip"
 								title="Reset Research">&#10227; Reset</a>

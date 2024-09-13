@@ -12,6 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -45,9 +48,17 @@ public class Food {
 
 	@UpdateTimestamp
 	private Instant updatedAt;
-	
-	@OneToMany( mappedBy = "food", cascade = CascadeType.REMOVE)
+
+	@OneToMany(mappedBy = "food", cascade = CascadeType.REMOVE)
 	private List<Offer> offers;
+
+	@ManyToMany
+	@JoinTable( 
+			name = "food_ingredient", 
+			joinColumns = @JoinColumn(name = "food_id"), 
+			inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+			)
+	private List<Ingredient> ingredients;
 
 	public Instant getUpdatedAt() {
 		return updatedAt;
@@ -74,7 +85,7 @@ public class Food {
 	}
 
 	public Double getPrice() {
-		
+
 		return price;
 	}
 
@@ -97,7 +108,7 @@ public class Food {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-	
+
 	public String getPriceFormatted() {
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		return formatter.format(price);
@@ -110,5 +121,5 @@ public class Food {
 	public void setOffers(List<Offer> offers) {
 		this.offers = offers;
 	}
-	
+
 }
