@@ -42,6 +42,17 @@
 						<li th:each="err : ${#fields.errors('price')}" th:text="${err}" class="error" />
 					</ul>
 				</div>
+				<!--INGREDIENTS FIELD-->
+				<th:block th:if="${ingredients.size() > 0}">
+					<label for="ingredient_list">Ingredients:</label>
+					<ul class="list-group" id="ingredient_list">
+						<li class="list-group-item" th:each="ingredient : ${ingredients}">
+							<input class="form-check-input me-1" type="checkbox" th:id="|ingredient_${ingredient.id}|"
+								th:value="${ingredient.id}" th:field="${food.ingredients}">
+							[[${ingredient.name}]]
+						</li>
+					</ul>
+				</th:block>
 				<!--BUTTONS-->
 				<div class="mt-3">
 					<button type="submit" class="btn btn-dark">Submit</button>

@@ -52,13 +52,26 @@ public class Food {
 	@OneToMany(mappedBy = "food", cascade = CascadeType.REMOVE)
 	private List<Offer> offers;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable( 
 			name = "food_ingredient", 
 			joinColumns = @JoinColumn(name = "food_id"), 
 			inverseJoinColumns = @JoinColumn(name = "ingredient_id")
 			)
 	private List<Ingredient> ingredients;
+	
+	public void addIngredient(Ingredient ingredient) {
+	    this.ingredients.add(ingredient);
+	    ingredient.getFoods().add(this);
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
 
 	public Instant getUpdatedAt() {
 		return updatedAt;
@@ -121,5 +134,14 @@ public class Food {
 	public void setOffers(List<Offer> offers) {
 		this.offers = offers;
 	}
+
+	@Override
+	public String toString() {
+		return "Food [id=" + id + ", name=" + name + ", description=" + description + ", imgUrl=" + imgUrl + ", price="
+				+ price + ", updatedAt=" + updatedAt + ", offers=" + offers + ", ingredients=" + ingredients + "]";
+	}
+	
+	
+	
 
 }

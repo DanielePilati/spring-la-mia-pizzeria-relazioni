@@ -16,7 +16,7 @@ public class FoodService {
 	private FoodRepository repo;
 	
 	public List<Food> findAllFoods(){
-		return repo.findAll(Sort.by("updatedAt"));
+		return repo.findAll(Sort.by("id"));
 	}
 	
 	public Food findById(Integer id) {

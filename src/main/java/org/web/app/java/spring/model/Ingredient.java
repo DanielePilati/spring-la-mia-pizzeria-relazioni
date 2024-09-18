@@ -2,11 +2,14 @@ package org.web.app.java.spring.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,8 +29,22 @@ public class Ingredient {
 	@Column(name = "name")
 	private String name;
 	
-	@ManyToMany( mappedBy = "ingredients")
+	@ManyToMany(cascade = CascadeType.MERGE)
+	@JoinTable( 
+			name = "food_ingredient", 
+			joinColumns = @JoinColumn(name = "ingredient_id"), 
+			inverseJoinColumns = @JoinColumn(name = "food_id")
+			)
 	private List<Food> foods;
+	
+
+	public List<Food> getFoods() {
+		return foods;
+	}
+
+	public void setFoods(List<Food> foods) {
+		this.foods = foods;
+	}
 
 	public Integer getId() {
 		return id;

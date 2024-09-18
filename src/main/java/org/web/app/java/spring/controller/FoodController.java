@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.web.app.java.spring.model.Food;
 import org.web.app.java.spring.model.Offer;
 import org.web.app.java.spring.service.FoodService;
+import org.web.app.java.spring.service.IngredientService;
 
 import jakarta.validation.Valid;
 
@@ -23,6 +24,9 @@ public class FoodController {
 
 	@Autowired
 	private FoodService foodService;
+	
+	@Autowired
+	private IngredientService ingredientService;
 
 	// READ
 	@GetMapping()
@@ -33,7 +37,8 @@ public class FoodController {
 
 		return "/foods/index";
 	}
-
+	
+	// SHOW
 	@GetMapping("/show/{id}")
 	public String show(Model model, @PathVariable("id") Integer foodId) {
 
@@ -50,7 +55,8 @@ public class FoodController {
 
 		return "/offers/create";
 	}
-
+	
+	//SEARCH
 	@GetMapping("/search/")
 	public String search(Model model, @RequestParam("name") String name) {
 
@@ -65,6 +71,7 @@ public class FoodController {
 	public String create(Model model) {
 
 		model.addAttribute("food", new Food());
+		model.addAttribute("ingredients", ingredientService.findAllIngredients());
 
 		return "/foods/create";
 	}
@@ -74,6 +81,7 @@ public class FoodController {
 			RedirectAttributes attributes) {
 
 		if (br.hasErrors()) {
+			model.addAttribute("ingredients", ingredientService.findAllIngredients());
 			return "/foods/create";
 		}
 
@@ -90,6 +98,7 @@ public class FoodController {
 	public String edit(Model model, @PathVariable("id") Integer foodId) {
 
 		model.addAttribute("food", foodService.findById(foodId));
+		model.addAttribute("ingredients", ingredientService.findAllIngredients());
 
 		return "/foods/edit";
 	}
@@ -99,6 +108,7 @@ public class FoodController {
 			RedirectAttributes attributes) {
 
 		if (br.hasErrors()) {
+			model.addAttribute("ingredients", ingredientService.findAllIngredients());
 			return "/foods/edit";
 		}
 

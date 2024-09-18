@@ -26,11 +26,15 @@
 					<!--BODY-->
 					<div class="card-body">
 						<h5 class="card-title">[[*{name}]]</h5>
-						<p class="card-text">[[*{description}]]
-						</p>
+						<p class="card-text">[[*{description}]]</p>
 					</div>
 					<ul class="list-group list-group-flush">
-						<li class="list-group-item text-end">[[*{getPriceFormatted()}]]</li>
+						<!-- INGREDIENTS -->
+						<li class="list-group-item" th:if="*{ingredients.size() > 0}">
+							<span><b>Ingredients List:</b></span>
+							<span th:each="ingredient : *{ingredients}">[[${ingredient.name}]], </span>
+						</li>
+						<!-- OFFERS -->
 						<li class="list-group-item text-danger" th:each="offer : *{offers}">
 							<div class="row">
 								<h6 class="col">[[${offer.title}]]</h6>
@@ -79,6 +83,7 @@
 								</div>
 							</div>
 						</li>
+						<li class="list-group-item text-end">[[*{getPriceFormatted()}]]</li>
 					</ul>
 					<!--BUTTONS-->
 					<div class="card-body">

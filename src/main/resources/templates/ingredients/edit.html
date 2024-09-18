@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link th:replace="~{fragments/fragments :: head}">
+	</link>
+</head>
+
+<body>
+	<!--header-->
+	<header th:replace="~{fragments/fragments :: header('ingredients')}">
+	</header>
+	<!--main-->
+	<main>
+		<h1 class="text-center">Editing <b>[[${ingredient.name}]]</b></h1>
+		<div class="container justify-content-center px-5">
+			<!--FORM-->
+			<form id="ingredients-edit-form" method="POST" th:action="@{/ingredients/edit/{id}(id=${ingredient.id})}" th:object="${ingredient}">
+				<!--NAME FIELD-->
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type="text" class="form-control" id="name" th:field="*{name}">
+					<ul th:if="${#fields.hasErrors()}" class="text-danger mt-2 ps-4">
+						<li th:each="err : ${#fields.errors('name')}" th:text="${err}" class="error " />
+					</ul>
+				</div>
+				<!--FOODS FIELD-->
+				<th:block th:if="${foods.size() > 0}">
+					<label for="foods_list">Related Foods:</label>
+					<ul class="list-group" id="foods_list">
+						<li class="list-group-item" th:each="food : ${foods}">
+							<input class="form-check-input me-1" type="checkbox" th:id="|food_${food.id}|" th:value="${food.id}" th:field="${ingredient.foods}">
+							[[${food.name}]]
+						</li>
+					</ul>
+				</th:block>
+				<!--BUTTONS-->
+				<div class="mt-3">
+					<!--RESET-->
+					<a th:href="@{/ingredients/edit/{id}(id = *{id})}" class="btn btn-dark">Reset Param</a>
+					<!--BACK-->
+					<a th:href="@{/ingredients}" class="card-link btn btn-dark">Back to Menù</a>
+					<!--EDIT-->
+					<form th:replace="~{fragments/fragments :: modal-food(${ingredient}, 'edit')}">
+				</div>
+
+			</form>
+		</div>
+	</main>
+	<!--footer-->
+	<footer>
+
+	</footer>
+</body>
+<!--scripts-->
+<th:block th:replace="~{fragments/fragments :: scripts}">
+	</th>
+
+</html>
