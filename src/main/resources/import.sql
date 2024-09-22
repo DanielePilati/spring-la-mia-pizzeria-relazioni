@@ -2,6 +2,6 @@ INSERT INTO foods (food_price, food_name, img_url, description) VALUES (9.99, 'P
 INSERT INTO offers (food_id, start_date, end_date, title) VALUES (1, '2024-09-12', '2024-10-12', 'Autumn Sale'), (1, '2024-08-12', '2024-10-24', 'Test Offer'), (2, '2024-08-12', '2024-10-24', 'Test Sale')
 INSERT INTO ingredients (name) VALUES ('Tomato'), ('Salad'), ('Mozzarella'), ('Pepper'), ('Basil');
 INSERT INTO food_ingredient (food_id,ingredient_id) VALUES (1,2),(1,1),(1,3);
-INSERT INTO users (username,password) VALUES ('ciccio','bombo'),('canno','niere');
+INSERT INTO users (username,password) VALUES ('ciccio','{noop}bombo'),('canno','{noop}niere');
 INSERT INTO roles (name) VALUES ('ADMIN'),('USER');
 INSERT INTO users_roles (roles_id, user_id) VALUES (1, 1),(2, 2);

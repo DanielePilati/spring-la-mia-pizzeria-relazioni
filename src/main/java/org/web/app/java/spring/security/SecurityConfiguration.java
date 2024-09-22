@@ -13,14 +13,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-	@SuppressWarnings("removal")
+	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		http.authorizeHttpRequests()
+		.requestMatchers("/foods/create").hasAuthority("ADMIN")
+		.requestMatchers("/ingredients/create").hasAuthority("ADMIN")
+		.requestMatchers("/foods/edit/**").hasAuthority("ADMIN")
+		.requestMatchers("/ingredients/edit/**").hasAuthority("ADMIN")
+		.requestMatchers("/foods/delete/**").hasAuthority("ADMIN")
+		.requestMatchers("/ingredients/delete/**").hasAuthority("ADMIN")
+		.requestMatchers("/offers/**").hasAuthority("ADMIN")
 		.requestMatchers("/user").hasAuthority("USER")
 		.requestMatchers("/admin").hasAuthority("ADMIN")
-		.requestMatchers("/").permitAll()
+		.requestMatchers("/**").permitAll()
 		.and().formLogin()
 		.and().logout();
 		
