@@ -1,5 +1,6 @@
 package org.web.app.java.spring.security;
 
+import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
 	
+	@SuppressWarnings("removal")
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
@@ -29,7 +31,9 @@ public class SecurityConfiguration {
 		.requestMatchers("/admin").hasAuthority("ADMIN")
 		.requestMatchers("/**").permitAll()
 		.and().formLogin()
-		.and().logout();
+		.and().logout()
+		.and().exceptionHandling().
+		and().csrf().disable();
 		
 		return http.build();
 	}

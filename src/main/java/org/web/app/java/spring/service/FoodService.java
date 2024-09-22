@@ -2,6 +2,7 @@ package org.web.app.java.spring.service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -19,20 +20,20 @@ public class FoodService {
 		return repo.findAll(Sort.by("id"));
 	}
 	
-	public Food findById(Integer id) {
-		return repo.findById(id).get();
+	public Optional<Food> findById(Integer id) {
+		return repo.findById(id);
 	}
 	
 	public List<Food> findByName(String name){
 		return repo.findByNameContains(name);
 	}
 	
-	public void create(Food food) {
-		repo.save(food);
+	public Food create(Food food) {
+		return repo.save(food);
 	}
-	public void update(Food food) {
+	public Food update(Food food) {
 		food.setUpdatedAt(Instant.now());
-		repo.save(food);
+		return repo.save(food);
 	}
 	public void deleteById(Integer id) {
 		repo.deleteById(id);

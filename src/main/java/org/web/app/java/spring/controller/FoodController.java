@@ -50,7 +50,7 @@ public class FoodController {
 	@GetMapping("/show/{id}/offer")
 	public String offer(Model model, @PathVariable("id") Integer foodId) {
 		Offer offer = new Offer();
-		offer.setFood(foodService.findById(foodId));
+		offer.setFood(foodService.findById(foodId).get());
 		model.addAttribute("offer", offer);
 
 		return "/offers/create";
@@ -97,7 +97,7 @@ public class FoodController {
 	@GetMapping("/edit/{id}")
 	public String edit(Model model, @PathVariable("id") Integer foodId) {
 
-		model.addAttribute("food", foodService.findById(foodId));
+		model.addAttribute("food", foodService.findById(foodId).get());
 		model.addAttribute("ingredients", ingredientService.findAllIngredients());
 
 		return "/foods/edit";

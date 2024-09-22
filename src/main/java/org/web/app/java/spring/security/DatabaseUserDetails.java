@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.web.app.java.spring.model.Role;
 import org.web.app.java.spring.model.User;
 
+@SuppressWarnings("serial")
 public class DatabaseUserDetails implements UserDetails {
 
 	private final Integer id;
