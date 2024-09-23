@@ -2,6 +2,8 @@ package org.web.app.java.spring.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +37,7 @@ public class Offer {
 	
 	@ManyToOne
 	@JoinColumn(name = "food_id", nullable = false)
+	@JsonBackReference
 	private Food food;
 	
 	public Integer getId() {
