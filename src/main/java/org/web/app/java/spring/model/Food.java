@@ -52,6 +52,7 @@ public class Food {
 	private Instant updatedAt;
 
 	@OneToMany(mappedBy = "food", cascade = CascadeType.REMOVE)
+	@JsonManagedReference
 	private List<Offer> offers;
 
 	@ManyToMany(cascade = CascadeType.MERGE)

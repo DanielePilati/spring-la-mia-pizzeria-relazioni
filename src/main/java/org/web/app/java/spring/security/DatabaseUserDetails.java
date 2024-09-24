@@ -48,4 +48,8 @@ public class DatabaseUserDetails implements UserDetails {
 		return this.username;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
 }

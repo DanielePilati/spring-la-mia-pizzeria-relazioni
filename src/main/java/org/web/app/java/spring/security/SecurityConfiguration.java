@@ -1,6 +1,5 @@
 package org.web.app.java.spring.security;
 
-import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,6 +29,7 @@ public class SecurityConfiguration {
 		.requestMatchers("/user").hasAuthority("USER")
 		.requestMatchers("/admin").hasAuthority("ADMIN")
 		.requestMatchers("/**").permitAll()
+		.requestMatchers("/api/foods").permitAll()
 		.and().formLogin()
 		.and().logout()
 		.and().exceptionHandling().
@@ -37,8 +37,7 @@ public class SecurityConfiguration {
 		
 		return http.build();
 	}
-
-
+	
 	@Bean
 	DatabaseUserDetailService userDetailService() {
 		return new DatabaseUserDetailService();
